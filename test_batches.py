@@ -1,5 +1,4 @@
 from datetime import date
-import pytest
 
 from model import Batch, OrderLine
 
@@ -51,3 +50,10 @@ def test_allocation_is_idempotent():
     batch.allocate(line)
     batch.allocate(line)
     assert batch.available_quantity == 4
+
+
+def test_deallocate():
+    batch, line = make_batch_and_line('EXPENSIVE-CHAIR', 2, 1)
+    batch.allocate(line)
+    batch.deallocate(line)
+    assert batch.available_quantity == 2
